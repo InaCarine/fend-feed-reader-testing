@@ -36,6 +36,7 @@ $(function() {
                 expect(feed.url).toBeDefined();
                 expect(feed.url.length).not.toBe(0);
                 // https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
+                // Checks that the feed got a valid url based on a regular expression
                 expect(feed.url).toMatch(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/);
             });
         });
@@ -74,10 +75,14 @@ $(function() {
             
             // is it okay to do it like this?
             // Or is there a better way?
+            // Triggers a click on the menu button
             button.trigger("click");
+            // Then expect the menu to be showing
             expect($('body').hasClass('menu-hidden')).toBe(false);
             
+            // Click the button again
             button.trigger("click");
+            // And expect the menu to be hidden again
             expect($('body').hasClass('menu-hidden')).toBe(true);
         });
     });
@@ -85,6 +90,7 @@ $(function() {
     /* TODO: Write a new test suite named "Initial Entries" */
     describe('Initial Entries', function() {
 
+        // Run the loadFeed function before each test
         beforeEach(function(done) {
             loadFeed(0, function() {
                 done();
@@ -97,8 +103,10 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
         it('has at least one single entry', function(done) {
-            const firstEntry = document.querySelector('.feed').childNodes.length;
-            
+            // Get how many children the feed container got
+            const firstEntry = document.querySelector('.feed').children.length;
+
+            // Fail if the feed got 0 entries
             expect(firstEntry).not.toBe(0);
             done();
         });
@@ -106,9 +114,29 @@ $(function() {
 
 
     /* TODO: Write a new test suite named "New Feed Selection" */
+    describe('New Feed Selection', function() {
+        let firstEntry;
 
+        beforeEach(function(done) {
+            // Get the first entry link before feed change
+            // Doesn't feel like the correct way to test it. Whats the correct way?
+            // To check if the .header-title changes?
+            firstEntry = document.querySelector('.feed').children[0].getAttribute('href');
+            loadFeed(1, function () {
+                done();
+            });
+        });
         /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
-         */
+        * by the loadFeed function that the content actually changes.
+        * Remember, loadFeed() is asynchronous.
+        */
+        it('changes content on feed selection', function(done) {
+            // get the new first entry link
+           const newEntry = document.querySelector('.feed').children[0].getAttribute('href');
+
+           // The new entry should not have the same url as the old entry
+           expect(newEntry).not.toBe(firstEntry);
+           done();
+        });
+    });
 }());
