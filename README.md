@@ -1,5 +1,5 @@
 # Feed reader testing
-For this project I was given an RSS feed where I had to write the tests for, using Jasmine.
+For this project I was given an RSS feed which I had to write the tests for by using [Jasmine](https://jasmine.github.io/).
 
 This was a project part of the [Front-end Web Developer nanodegree](https://eu.udacity.com/course/front-end-web-developer-nanodegree--nd001) with Udacity and Google. The original files for the project can be found at [Udacity's GitHub profile](https://github.com/udacity/frontend-nanodegree-feedreader). Here's my other [projects for fend](https://inacarine.github.io/fend).
 
