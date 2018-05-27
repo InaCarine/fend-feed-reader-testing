@@ -96,6 +96,7 @@ $(function() {
                 done();
             });
         });
+
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
@@ -103,11 +104,7 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
         it('has at least one single entry', function(done) {
-            // Get how many children the feed container got
-            const firstEntry = document.querySelector('.feed').children.length;
-
-            // Fail if the feed got 0 entries
-            expect(firstEntry).not.toBe(0);
+            expect($('.feed .entry').length).not.toBe(0);
             done();
         });
 `   `});
@@ -115,27 +112,27 @@ $(function() {
 
     /* TODO: Write a new test suite named "New Feed Selection" */
     describe('New Feed Selection', function() {
-        let firstEntry;
+        let prevData, newData;
 
         beforeEach(function(done) {
-            // Get the first entry link before feed change
-            // Doesn't feel like the correct way to test it. Whats the correct way?
-            // To check if the .header-title changes?
-            firstEntry = document.querySelector('.feed').children[0].getAttribute('href');
-            loadFeed(1, function () {
-                done();
+            // Wait for first feed to load, and get the data
+            loadFeed(0, function () {
+                prevData = $('.feed').html();
+
+            // Then change the feed and get the new data that was loaded
+                loadFeed(1, function() {
+                    newData = $('.feed').html();
+                    done();
+                });
             });
         });
+
         /* TODO: Write a test that ensures when a new feed is loaded
         * by the loadFeed function that the content actually changes.
         * Remember, loadFeed() is asynchronous.
         */
         it('changes content on feed selection', function(done) {
-            // get the new first entry link
-           const newEntry = document.querySelector('.feed').children[0].getAttribute('href');
-
-           // The new entry should not have the same url as the old entry
-           expect(newEntry).not.toBe(firstEntry);
+            expect(prevData).not.toBe(newData);
            done();
         });
     });
